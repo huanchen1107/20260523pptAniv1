@@ -17,7 +17,7 @@ The project currently processes PowerPoint slides into audio and visual assets. 
 
 ## Decisions
 
-- **Orchestration script:** A Bash script (`convert_images.sh`) will handle scanning the source directory, invoking the local `excalidraw‑control` skill via its CLI, and piping the result to `hyperframes render`.
+- **Orchestration script:** A Bash script (`convert_image_to_html.sh`) will handle scanning the source directory, invoking the local `excalidraw‑control` skill via its CLI, and piping the result to `hyperframes render`.
 - **Dependency management:** `excalidraw‑control` is provided as a local skill within the repository; `hyperframes-cli` will be installed as an npm devDependency (`npm i -D hyperframes-cli`).
 - **Output location:** Generated HTML files will be placed in each slide folder as `user/assets/slides/slide-<N>/slide-<N>.html` (e.g., `slide-1/slide-1.html`).
 - **CI integration:** The script will be added to the asset‑preparation stage of the CI pipeline, ensuring HTML is regenerated on each commit.

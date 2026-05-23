@@ -27,6 +27,6 @@ Experimentally compare the built‑in `excalidraw‑control` skill with an alter
 - **Manual**: After CI finishes, open `benchmark_report.md` to confirm the collected metrics.
 
 ## Open Questions
-- Which specific alternative tool should be used?
-- What performance/size thresholds define a “better” tool?
-- Should the experiment run on every PR or only on a scheduled basis?
+- **Alternative tool**: `html-converter-cli` – a simple CLI that converts PNG/JPEG to HTML
+- **Performance threshold**: < 100 ms per image
+- **Run schedule**: Manual (triggered only when you run the benchmark)

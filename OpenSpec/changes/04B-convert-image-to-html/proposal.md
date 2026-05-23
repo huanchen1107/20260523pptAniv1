@@ -7,8 +7,8 @@ Convert each page image to an HTML file using HyperFrame and the Excalidraw‑co
 
 ## What Changes
 
-- Add a new CLI script `convert_images.sh` that scans each `user/assets/slides/slide-*/` directory for an image, uses the `excalidraw‑control` skill to generate an Excalidraw scene, and renders HTML with HyperFrame into the same slide folder as `slide-<N>.html`.
-- Introduce a new capability `image-to-html-conversion` that defines the contract for this conversion pipeline.
+- Add a new CLI script `convert_image_to_html.sh` that scans each `user/assets/slides/slide-*/` directory for an image, uses the `excalidraw‑control` skill to generate an Excalidraw scene, and renders HTML with HyperFrame into the same slide folder as `slide-<N>.html`.
+- Requires updates to CI scripts to run `convert_image_to_html.sh` during asset preparation.` that defines the contract for this conversion pipeline.
 - Create supporting documentation (README, design, specs, tasks) for the new change.
 
 ## Capabilities
@@ -23,4 +23,4 @@ Convert each page image to an HTML file using HyperFrame and the Excalidraw‑co
 
 - Adds dependencies on `excalidraw‑control` (local skill) and `hyperframes-cli` (npm package).
 - Extends the build pipeline to include an image‑to‑HTML generation step.
-- Requires updates to CI scripts to run `convert_images.sh` during asset preparation.
+- Requires updates to CI scripts to run `convert_image_to_html.sh` during asset preparation.

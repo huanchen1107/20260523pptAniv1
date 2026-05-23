@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Skill Comparison Demo</title>
+  <style>
+    body, html {height: 100%; margin: 0; font-family: Inter, sans-serif; background: #f0f2f5;}
+    .container {display: flex; gap: 10px; justify-content: space-between; align-items: center; width: 100%;}
+    iframe {border: 2px solid #333; width: 48%; height: 80vh;}
+    h1 {text-align: center; margin: 10px 0;}
+    @media (max-width: 800px) {
+      .container {flex-direction: column; align-items: stretch;}
+      iframe {width: 100%; height: 60vh;}
+    }
+  </style>
+</head>
+<body>
+  <h1>Excalidraw vs Simple HTML Demo</h1>
+  <div class="container">
+    <iframe src="slide-1-01_excalidraw.html" title="Excalidraw Demo"></iframe>
+    <iframe src="slide-1-01_simple.html" title="Simple Demo"></iframe>
+  </div>
+</body>
+</html>

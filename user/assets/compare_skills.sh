@@ -35,7 +35,7 @@ run_tool() {
     eval "$cmd" "$img" > "$out_file"
     local end=$(date +%s.%N)
     local duration=$(awk "BEGIN {print $end - $start}")
-    local size=$(stat -c%s "$out_file")
+    local size=$(stat -f%z "${out_file}")
     echo "| $base | $tool_name | $duration | $size |" >> "$REPORT"
     # Clean up output if not needed
     rm -f "$out_file"
