@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>slide-7 Storyboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@hyperframes/cli"></script>
+  <style>
+    body,html{margin:0;padding:0;overflow:hidden;background:#111;}
+    #stage{position:relative;width:100vw;height:100vh;}
+    img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;}
+    .caption{position:absolute;bottom:5%;width:100%;text-align:center;color:#fff;font-size:2rem;opacity:0;}
+  </style>
+</head>
+<body data-hf-timeline="slide-7" data-hf-duration="150" data-hf-fps="30">
+  <div id="stage">
+    <img id="slideImg" src="slide-7-07.png" alt="slide-7">
+    <div class=caption id=caption>經密拆解為四個項線
+從確立目標與解法原理的意圖
+進入架構設計與元素定義的設計
+在推進到視覺畫架構與流程圖時造的瞄擊
+最後以具體範例與數學公式完成驗證
+從PA一路推進到PM
+這是一個容錯率極低的模組
+每項宣告都必須有渣時的技術細節作為後頓
+緊接著是本系統中最嚴格的連冠性真錯模式
+在架構設計中視覺畫架構圖</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({repeat:0});
+    // fade‑in caption if present
+    if (document.getElementById('caption')) {
+      tl.from('#caption', {duration:1, opacity:0, ease:'power2.out'});
+    }
+    // zoom animation based on caption keyword
+    const zoomFactor = 1;
+    if (zoomFactor > 1) {
+      tl.to('#slideImg', {duration:2, scale:zoomFactor, ease:'power2.inOut'});
+      tl.to('#slideImg', {duration:2, scale:1, ease:'power2.inOut'});
+    }
+    // ensure GSAP timeline syncs with HyperFrames frame rendering
+    const hf = window.HyperFrames || {};
+    if (hf.setTimeline) {
+      hf.setTimeline(tl);
+    }
+  </script>
+</body>
+</html>

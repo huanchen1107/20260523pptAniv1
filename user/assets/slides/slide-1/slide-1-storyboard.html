@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>slide-1 Storyboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@hyperframes/cli"></script>
+  <style>
+    body,html{margin:0;padding:0;overflow:hidden;background:#111;}
+    #stage{position:relative;width:100vw;height:100vh;}
+    img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;}
+    .caption{position:absolute;bottom:5%;width:100%;text-align:center;color:#fff;font-size:2rem;opacity:0;}
+  </style>
+</head>
+<body data-hf-timeline="slide-1" data-hf-duration="150" data-hf-fps="30">
+  <div id="stage">
+    <img id="slideImg" src="slide-1-01.png" alt="slide-1">
+    <div class=caption id=caption>各位學者與研究人員, 歡迎進入學術論文寫作全指南
+在今天的一程中, 我們將重述您對論文寫作的認知
+經兵器論文寫作是一門藝術的傳統思維
+從專業的角度來看, 這是一項嚴謹的系統工程
+我們將導入一套從A到Z的完美夾告
+將您的寫作流程正式升級為高階的真錯模式D-Buck Mode
+透過這套系統化的視角, 您將能精準掌控文章的每一個邏輯節</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({repeat:0});
+    // fade‑in caption if present
+    if (document.getElementById('caption')) {
+      tl.from('#caption', {duration:1, opacity:0, ease:'power2.out'});
+    }
+    // zoom animation based on caption keyword
+    const zoomFactor = 1;
+    if (zoomFactor > 1) {
+      tl.to('#slideImg', {duration:2, scale:zoomFactor, ease:'power2.inOut'});
+      tl.to('#slideImg', {duration:2, scale:1, ease:'power2.inOut'});
+    }
+    // ensure GSAP timeline syncs with HyperFrames frame rendering
+    const hf = window.HyperFrames || {};
+    if (hf.setTimeline) {
+      hf.setTimeline(tl);
+    }
+  </script>
+</body>
+</html>

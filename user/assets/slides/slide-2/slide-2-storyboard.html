@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>slide-2 Storyboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@hyperframes/cli"></script>
+  <style>
+    body,html{margin:0;padding:0;overflow:hidden;background:#111;}
+    #stage{position:relative;width:100vw;height:100vh;}
+    img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;}
+    .caption{position:absolute;bottom:5%;width:100%;text-align:center;color:#fff;font-size:2rem;opacity:0;}
+  </style>
+</head>
+<body data-hf-timeline="slide-2" data-hf-duration="150" data-hf-fps="30">
+  <div id="stage">
+    <img id="slideImg" src="slide-2-02.png" alt="slide-2">
+    <div class=caption id=caption>我們首先要面對一個殘酷的問題
+為什麼您的論文會遭到退稿呢?
+從資深神告委員的視角偷襲
+退稿通常不是因為單純的觀點差異
+而是整篇文章發生了系統編譯失敗
+這類致病錯誤包含模組A的動機缺失
+系統加構圖與數學公式的邏輯部體配
+或是與最先進技術的比較</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({repeat:0});
+    // fade‑in caption if present
+    if (document.getElementById('caption')) {
+      tl.from('#caption', {duration:1, opacity:0, ease:'power2.out'});
+    }
+    // zoom animation based on caption keyword
+    const zoomFactor = 1;
+    if (zoomFactor > 1) {
+      tl.to('#slideImg', {duration:2, scale:zoomFactor, ease:'power2.inOut'});
+      tl.to('#slideImg', {duration:2, scale:1, ease:'power2.inOut'});
+    }
+    // ensure GSAP timeline syncs with HyperFrames frame rendering
+    const hf = window.HyperFrames || {};
+    if (hf.setTimeline) {
+      hf.setTimeline(tl);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>slide-10 Storyboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@hyperframes/cli"></script>
+  <style>
+    body,html{margin:0;padding:0;overflow:hidden;background:#111;}
+    #stage{position:relative;width:100vw;height:100vh;}
+    img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;}
+    .caption{position:absolute;bottom:5%;width:100%;text-align:center;color:#fff;font-size:2rem;opacity:0;}
+  </style>
+</head>
+<body data-hf-timeline="slide-10" data-hf-duration="150" data-hf-fps="30">
+  <div id="stage">
+    <img id="slideImg" src="slide-10-10.png" alt="slide-10">
+    <div class=caption id=caption>這是系統運作完畢後的輸出日志
+從W重新盤點研究情境
+X點出眼散法的專精優勢
+Y經驗出具有最突破性的數據產出
+最後以Z提出對未來的終極展望
+這裡隱藏著一個高階寫作動件
+清階是您的系統日志
+模組終點的結論Z
+是否完美並深刻的回應了系統奇點的動機A
+這必須是一個守衛呼應
+延似合縫的完美並還
+在您準備按下提交</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({repeat:0});
+    // fade‑in caption if present
+    if (document.getElementById('caption')) {
+      tl.from('#caption', {duration:1, opacity:0, ease:'power2.out'});
+    }
+    // zoom animation based on caption keyword
+    const zoomFactor = 1;
+    if (zoomFactor > 1) {
+      tl.to('#slideImg', {duration:2, scale:zoomFactor, ease:'power2.inOut'});
+      tl.to('#slideImg', {duration:2, scale:1, ease:'power2.inOut'});
+    }
+    // ensure GSAP timeline syncs with HyperFrames frame rendering
+    const hf = window.HyperFrames || {};
+    if (hf.setTimeline) {
+      hf.setTimeline(tl);
+    }
+  </script>
+</body>
+</html>

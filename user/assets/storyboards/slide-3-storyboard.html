@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>slide-3 Storyboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@hyperframes/cli"></script>
+  <style>
+    body,html{margin:0;padding:0;overflow:hidden;background:#111;}
+    #stage{position:relative;width:100vw;height:100vh;}
+    img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;}
+    .caption{position:absolute;bottom:5%;width:100%;text-align:center;color:#fff;font-size:2rem;opacity:0;}
+  </style>
+</head>
+<body data-hf-timeline="slide-3" data-hf-duration="150" data-hf-fps="30">
+  <div id="stage">
+    <img id="slideImg" src="slide-3-03.png" alt="slide-3">
+    <div class=caption id=caption>故於補弱
+自家的解決方案就是逃用這套A-D-Z的架構
+如同資深工程師排查城市錯誤一般
+驚確定位並修復論文中的斷烈邏輯鏈墊
+為了解決上述痛點
+我們建構這套有六大核心模組組成的系統
+這六大模組完美對應了英文字幕的26個邏輯節點
+保寒作為吸引力引擎的摘藥與洞機
+擴展麥洛的簡介作為交風戰場的相關研究
+作為核心運善引擎的提出方法與系統
+執行壓力測試的模擬與實驗
+以及最後輸出日至的結論與未來工作
+每一片頂級期間的完美論文
+其底層邏輯必定能無奉對應這26個字幕
+讓我們進入第一模組</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({repeat:0});
+    // fade‑in caption if present
+    if (document.getElementById('caption')) {
+      tl.from('#caption', {duration:1, opacity:0, ease:'power2.out'});
+    }
+    // zoom animation based on caption keyword
+    const zoomFactor = 1;
+    if (zoomFactor > 1) {
+      tl.to('#slideImg', {duration:2, scale:zoomFactor, ease:'power2.inOut'});
+      tl.to('#slideImg', {duration:2, scale:1, ease:'power2.inOut'});
+    }
+    // ensure GSAP timeline syncs with HyperFrames frame rendering
+    const hf = window.HyperFrames || {};
+    if (hf.setTimeline) {
+      hf.setTimeline(tl);
+    }
+  </script>
+</body>
+</html>
