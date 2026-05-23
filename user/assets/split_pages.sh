@@ -62,9 +62,28 @@ fi
 MAX_SLIDES=$(( PAGE_COUNT < ${#timestamps[@]} ? PAGE_COUNT : ${#timestamps[@]} ))
 
 # --------------------------------------------------------------
+# 2b. Export timestamps as JSON for downstream tools
+# --------------------------------------------------------------
+TIMESTAMPS_JSON="${OUTPUT_DIR}/timestamps.json"
+printf '[' > "$TIMESTAMPS_JSON"
+for i in "${!timestamps[@]}"; do
+  start_time=$(if [ $i -eq 0 ]; then echo 1.0; else echo "${timestamps[$((i-1))]}"; fi)
+  end_time="${timestamps[$i]}"
+  printf '{"page":%d,"start":%s,"end":%s}' $((i+1)) "$start_time" "$end_time"
+  if [ $i -lt $(( ${#timestamps[@]} - 1 )) ]; then
+    printf ','
+  fi
+done >> "$TIMESTAMPS_JSON"
+printf ']' >> "$TIMESTAMPS_JSON"
+
+
+# --------------------------------------------------------------
 # 3. Generate slide folders, assets, and captions
 # --------------------------------------------------------------
 mkdir -p "$OUTPUT_DIR"
+# Initialize slide metadata file
+METADATA_FILE="${OUTPUT_DIR}/slide-metadata.yaml"
+echo 'slides:' > "$METADATA_FILE"
 slide_num=1
 prev_time=1.0
 while (( slide_num <= MAX_SLIDES )); do
@@ -96,17 +115,19 @@ fi
   # ----- Extract audio segment -----
   audio_file="$PAGE_DIR/audio-$slide_num.mp3"
   ffmpeg -y -i "$VIDEO" -ss "$start_time" -to "$end_time" -vn -c:a libmp3lame -q:a 2 "$audio_file" -loglevel error
-
-  # ----- Generate caption using Whisper (assumes `whisper` CLI is available) -----
-  caption_file="$PAGE_DIR/caption-$slide_num.txt"
-  if command -v whisper > /dev/null; then
-    whisper "$audio_file" --model tiny --output_dir "$PAGE_DIR" --output_format txt > /dev/null 2>&1
-    # Whisper writes a file named <audio_file>.txt; rename to our convention
-    mv "$PAGE_DIR/$(basename "$audio_file").txt" "$caption_file" || true
+# ----- Generate caption using Whisper (assumes `whisper` CLI is available) -----
+caption_file="${PAGE_DIR}/caption-${slide_num}.txt"
+if command -v whisper > /dev/null; then
+  whisper "$audio_file" --model tiny --output_dir "$PAGE_DIR" --output_format txt > /dev/null 2>&1
+  generated_txt="${PAGE_DIR}/$(basename "$audio_file").txt"
+  if [[ -f "$generated_txt" ]]; then
+    mv "$generated_txt" "$caption_file"
   else
-    echo "# Whisper not installed – caption placeholder" > "$caption_file"
+    echo "# Whisper output not available – caption placeholder" > "$caption_file"
   fi
-
+else
+  echo "# Whisper not installed – caption placeholder" > "$caption_file"
+fi
   # ----- Helper script for re‑processing this slide -----
   proc_script="$PAGE_DIR/process_page.sh"
   cat > "$proc_script" <<'EOS'
@@ -132,6 +153,14 @@ EOS
   sed -i '' "s|__START__|$start_time|" "$proc_script"
   sed -i '' "s|__END__|$end_time|" "$proc_script"
   sed -i '' "s|__PAGE__|$slide_num|" "$proc_script"
+
+  # Append slide entry to metadata file
+  cat >> "$METADATA_FILE" <<EOS
+  - page: $slide_num
+    png: $PAGE_DIR/slide-$slide_num.png
+    audio: $PAGE_DIR/audio-$slide_num.mp3
+    caption: $PAGE_DIR/caption-$slide_num.txt
+EOS
 
   ((slide_num++))
   prev_time=$end_time
