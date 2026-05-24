@@ -21,19 +21,9 @@ jobs:
         run: chmod +x user/assets/generate_storyboard.sh
       - name: Generate storyboards
         run: ./user/assets/generate_storyboard.sh
-      - name: Make render animation script executable
-        run: chmod +x user/assets/render_animation.sh
-      - name: Render animations (MP4) for each slide
-        run: ./user/assets/render_animation.sh
-      - name: Render videos (optional)
-        if: ${{ github.event.inputs.render == 'true' }}
-        run: |
-          for html in user/assets/storyboards/*-storyboard.html; do
-            mp4="${html%.html}.mp4"
-            npx hyperframes render "$html" -o "$mp4"
-          done
+
       - name: Upload storyboard artifacts
         uses: actions/upload-artifact@v3
         with:
           name: storyboards
-          path: user/assets/storyboards/*
+          path: user/assets/slides/*/*-storyboard.html

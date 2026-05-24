@@ -18,11 +18,18 @@ for slide_dir in "$SLIDES_ROOT"/slide-*/; do
     continue
   fi
 
+  # Workaround: hyperframes requires index.html to exist in the directory
+  cp "$storyboard_file" "${slide_dir}/index.html"
+
   # Use hyperframes render. If audio exists, include it via --audio flag
   if [[ -f "$audio_file" ]]; then
-    npx hyperframes render "$slide_dir" -c "${slide_name}-storyboard.html" -o "$output_mp4" --audio "$audio_file"
+    npx hyperframes render "$slide_dir" -o "$output_mp4" --audio "$audio_file"
   else
-    npx hyperframes render "$slide_dir" -c "${slide_name}-storyboard.html" -o "$output_mp4"
+    npx hyperframes render "$slide_dir" -o "$output_mp4"
   fi
+  
+  # Clean up temporary index.html
+  rm "${slide_dir}/index.html"
+
   echo "Rendered animation $output_mp4"
 done

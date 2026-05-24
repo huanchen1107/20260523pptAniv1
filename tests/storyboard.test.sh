@@ -15,7 +15,7 @@ declare -a bad=()
 
 for slide_dir in "$SLIDES_ROOT"/slide-*/; do
   slide_name=$(basename "$slide_dir")
-  storyboard_file="$STORYBOARDS_DIR/${slide_name}-storyboard.html"
+  storyboard_file="${slide_dir}/${slide_name}-storyboard.html"
   if [[ ! -f "$storyboard_file" ]]; then
     missing+=("$slide_name")
     continue
