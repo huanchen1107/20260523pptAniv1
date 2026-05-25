@@ -23,7 +23,8 @@ for slide_dir in "$BASE_SLIDE_DIR"/slide-*; do
       whisper "$audio_file" --model tiny --output_dir "$slide_dir" --output_format txt > /dev/null 2>&1
       # Whisper creates <audio_file>.txt ; rename to caption-<slide>.txt
       base_name=$(basename "$audio_file" .mp3)
-      mv "$slide_dir/${base_name}.txt" "$slide_dir/caption-$(basename "$slide_dir").txt" || true
+      slide_num="${slide_dir##*/slide-}"
+      mv "$slide_dir/${base_name}.txt" "$slide_dir/caption-${slide_num}.txt" || true
     else
       echo "Warning: audio file not found in $slide_dir, skipping."
     fi

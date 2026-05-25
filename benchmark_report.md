@@ -5,5 +5,5 @@
 \n## Results
 | Image | Tool | Time (s) | Size (bytes) |
 |------|------|----------|--------------|
-| slide-1-01.png | excalidraw | 0.00225496 | 154 |
-| slide-1-01.png | simple | 0.00270009 | 92 |
+| slide-1.png | excalidraw | 0.00225496 | 154 |
+| slide-1.png | simple | 0.00270009 | 92 |

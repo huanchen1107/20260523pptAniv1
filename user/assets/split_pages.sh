@@ -15,6 +15,16 @@
 
 set -euo pipefail
 
+sed_in_place() {
+  local expression="$1"
+  local file_path="$2"
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    sed -i '' "$expression" "$file_path"
+  else
+    sed -i "$expression" "$file_path"
+  fi
+}
+
 # Paths
 VIDEO="A2Z-original.mp4"
 PDF="A2ZpdfExcalidraw.pdf"
@@ -114,7 +124,7 @@ fi
 
   # ----- Extract audio segment -----
   audio_file="$PAGE_DIR/audio-$slide_num.mp3"
-  ffmpeg -y -i "$VIDEO" -ss "$start_time" -to "$end_time" -vn -c:a libmp3lame -q:a 2 "$audio_file" -loglevel error
+  ffmpeg -y -i "user/assets/A2Z-original-audio.mp3" -ss "$start_time" -to "$end_time" -c:a libmp3lame -q:a 2 "$audio_file" -loglevel error
 # ----- Generate caption using Whisper (assumes `whisper` CLI is available) -----
 caption_file="${PAGE_DIR}/caption-${slide_num}.txt"
 if command -v whisper > /dev/null; then
@@ -139,20 +149,21 @@ END="__END__"
 PAGE="__PAGE__"
 OUTDIR="$(dirname "$0")"
 # Re‑extract audio
-ffmpeg -i "$VIDEO" -ss "$START" -to "$END" -c:a copy -vn "$OUTDIR/audio-$(basename "$OUTDIR").mp3" -loglevel error
+ffmpeg -y -i "user/assets/A2Z-original-audio.mp3" -ss "$START" -to "$END" -c:a libmp3lame -q:a 2 "$OUTDIR/audio-$(basename "$OUTDIR").mp3" -loglevel error
 # Re‑render PDF page
 pdftoppm -f $PAGE -l $PAGE -png -r 300 "user/assets/A2ZpdfExcalidraw.pdf" "$OUTDIR/slide-$(basename "$OUTDIR")"
 # Regenerate caption if Whisper is available
 if command -v whisper > /dev/null; then
   whisper "$OUTDIR/audio-$(basename "$OUTDIR").mp3" --model tiny --output_dir "$OUTDIR" --output_format txt > /dev/null 2>&1
-  mv "$OUTDIR/$(basename "$OUTDIR").mp3.txt" "$OUTDIR/caption-$(basename "$OUTDIR").txt" || true
+  slide_num="${OUTDIR##*/slide-}"
+  mv "$OUTDIR/$(basename "$OUTDIR").mp3.txt" "$OUTDIR/caption-${slide_num}.txt" || true
 fi
 EOS
   chmod +x "$proc_script"
   # Replace placeholders
-  sed -i '' "s|__START__|$start_time|" "$proc_script"
-  sed -i '' "s|__END__|$end_time|" "$proc_script"
-  sed -i '' "s|__PAGE__|$slide_num|" "$proc_script"
+  sed_in_place "s|__START__|$start_time|" "$proc_script"
+  sed_in_place "s|__END__|$end_time|" "$proc_script"
+  sed_in_place "s|__PAGE__|$slide_num|" "$proc_script"
 
   # Append slide entry to metadata file
   cat >> "$METADATA_FILE" <<EOS
